@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  tomcat:
+    container_name: tomcat
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+  basededades:
+    image: mysql:8.2.0
+    container_name: basededades
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_USER=marian
+      - MYSQL_PASSWORD=1234
+      - MYSQL_DATABASE=fotos
+    volumes:
+      - db-fotos:/var/lib/mysql
+    expose:
+      - 3306
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_HOST=basededades
+    ports:
+      - "8083:80"
+    depends_on:
+      - basededades
+volumes:
+  db-fotos:
