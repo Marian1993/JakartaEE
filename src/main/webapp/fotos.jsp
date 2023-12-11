@@ -11,13 +11,15 @@
 <p><c:out value="hola mon 2"></c:out></p>
 <p><c:out value="${titol}"></c:out></p>
 <h2>${titol}</h2>
-<p><c:out value="${picture.url}"></c:out></p>
+<!--<p><c:out value="${picture.url}"></c:out></p>-->
 <!-- <img src="${picture.url}" alt="${picture.descripcio}"> -->
 
 <c:forEach items="${pictures}" var="f">
-    <c:if test="${not f.privada}">
-        <p><img src="${f.url}" alt="${f.descripcio}"></p>
-    </c:if>
+
+        <!--c:if test="${not f.privada}"-->
+            <p><img src="${f.url}" alt="${f.descripcio}"></p>
+        <!--/c:if-->
+
 </c:forEach>
 </body>
 </html>

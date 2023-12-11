@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.eclipse.jakarta.hello.dao.FotoDaoI;
 import org.eclipse.jakarta.hello.dao.FotoDatabaseDao;
 import org.eclipse.jakarta.hello.model.Foto;
@@ -45,12 +46,30 @@ public class FotoController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        List<Foto> fotos;
         try {
-             fotos = fotoService.findAll();
-            request.setAttribute("pictures",fotos);
-            request.setAttribute("titol",hola);
-            request.getRequestDispatcher("fotos.jsp").forward(request,response);
+            List<Foto> fotos = fotoService.findAll();
+
+            HttpSession session = request.getSession();
+            String autenticat = (String)session.getAttribute("autenticat");
+
+            System.out.println(autenticat);
+            for (int i = 0; i < fotos.size(); i++) {
+
+                System.out.println(fotos.get(i).getDescripcio());
+
+            }
+            if(autenticat == null || !autenticat.equals("SI")) {
+                fotos = fotos.stream().filter(f->!f.getPrivada()).toList();
+            }
+            for (int i = 0; i < fotos.size(); i++) {
+
+                System.out.println(fotos.get(i).getDescripcio());
+
+            }
+
+            request.setAttribute("pictures", fotos);
+            request.setAttribute("titol", hola);
+            request.getRequestDispatcher("fotos.jsp").forward(request, response);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -37,7 +37,7 @@ public class LoginController extends HttpServlet {
 
         Usuari user =this.usuariService.findUsuariByUsernameAndPassword(ususari,contrassenya);
 
-        if(ususari != null){
+        if(user != null){
             HttpSession session = request.getSession();
 
             //El primer parametre es el nom que li dones en aquest atribut a la sessio,lo que es guarda al navegador, per quen la vulguis cridar
