@@ -53,18 +53,9 @@ public class FotoController extends HttpServlet {
             String autenticat = (String)session.getAttribute("autenticat");
 
             System.out.println(autenticat);
-            for (int i = 0; i < fotos.size(); i++) {
 
-                System.out.println(fotos.get(i).getDescripcio());
-
-            }
             if(autenticat == null || !autenticat.equals("SI")) {
                 fotos = fotos.stream().filter(f->!f.getPrivada()).toList();
-            }
-            for (int i = 0; i < fotos.size(); i++) {
-
-                System.out.println(fotos.get(i).getDescripcio());
-
             }
 
             request.setAttribute("pictures", fotos);
