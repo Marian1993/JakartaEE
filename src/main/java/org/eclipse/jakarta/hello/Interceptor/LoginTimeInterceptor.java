@@ -8,11 +8,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-//Tots els directoris que estiguin davall aquest directori executara aquesta pagina
-//@WebFilter( urlPatterns = {"/admin/*"});
-
-@WebFilter(servletNames = {"Photos","PhotoForm"})
-public class LoginInterceptor implements Filter {
+@WebFilter(servletNames = {"Photos","PhotosForm"})
+public class LoginTimeInterceptor implements Filter{
 
 
     @Override
@@ -29,10 +26,15 @@ public class LoginInterceptor implements Filter {
 
         HttpSession session = request.getSession();
         String autenticat = (String)session.getAttribute("autenticat");
+        String time = (String)session.getAttribute("lastActiviti");
 
         if(autenticat != null && autenticat.equals("SI")) {
             //Patró: chain of responsibility
             filterChain.doFilter(servletRequest,servletResponse);
+            if(true){
+
+                session.invalidate();
+            }
         }else{
             response.sendRedirect("login");
         }
