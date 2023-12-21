@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebFilter(servletNames = {"Photos","PhotosForm"})
 public class LoginTimeInterceptor implements Filter{
@@ -25,18 +26,15 @@ public class LoginTimeInterceptor implements Filter{
         HttpServletResponse response = (HttpServletResponse)servletResponse;
 
         HttpSession session = request.getSession();
-        String autenticat = (String)session.getAttribute("autenticat");
-        String time = (String)session.getAttribute("lastActiviti");
+        LocalDateTime activiti = (LocalDateTime) session.getAttribute("lastActiviti");
+        LocalDateTime now =LocalDateTime.now();
 
-        if(autenticat != null && autenticat.equals("SI")) {
-            //Patró: chain of responsibility
-            filterChain.doFilter(servletRequest,servletResponse);
-            if(true){
-
-                session.invalidate();
-            }
-        }else{
+        if(activiti !=null && activiti.plusSeconds(30).isBefore(now)){
+            System.out.println("entra");
+            session.invalidate();
             response.sendRedirect("login");
+        }else {
+            filterChain.doFilter(servletRequest,servletResponse);
         }
     }
 

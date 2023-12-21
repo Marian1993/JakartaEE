@@ -11,6 +11,7 @@ import org.eclipse.jakarta.hello.service.UsuariServiceI;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 //es loginFrom, saps que ha de venir en aque
 @WebServlet(name="LoginControllerServlet", value = "/login")
@@ -43,10 +44,10 @@ public class LoginController extends HttpServlet {
             //El primer parametre es el nom que li dones en aquest atribut a la sessio,lo que es guarda al navegador, per quen la vulguis cridar
             session.setAttribute("usuari",user);
             session.setAttribute("autenticat","SI");
-            session.setAttribute("lastActiviti", LocalDate.now());
+            session.setAttribute("lastActiviti", LocalDateTime.now());
 
             if(remember!= null && remember.equals("true")){
-                Cookie cookie = new Cookie("remember","SI");
+                Cookie cookie = new Cookie("remember",user.getNom());
                 cookie.setMaxAge(60 * 60 * 60 * 24 * 365);
                 response.addCookie(cookie);
             }
